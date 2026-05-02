@@ -1,0 +1,431 @@
+{
+  "projectName": "Grove",
+  "projectDescription": "A progressive knowledge tree for understanding reality through connected domains.",
+  "nodes": [
+    {
+      "id": "root_knowledge",
+      "label": "Knowledge",
+      "description": "A living map of how we understand the world through evidence, reasoning, and shared meaning.",
+      "parentId": null,
+      "status": "active",
+      "attempts": 0,
+      "depth": 0
+    },
+
+    {
+      "id": "domain_science",
+      "label": "Science",
+      "description": "Explains the natural world through observation, models, and testable hypotheses.",
+      "parentId": "root_knowledge",
+      "status": "active",
+      "attempts": 0,
+      "depth": 1
+    },
+    {
+      "id": "domain_mathematics",
+      "label": "Mathematics",
+      "description": "The language of structure, quantity, and logical relationships.",
+      "parentId": "root_knowledge",
+      "status": "active",
+      "attempts": 0,
+      "depth": 1
+    },
+    {
+      "id": "domain_language",
+      "label": "Language",
+      "description": "How humans represent ideas, communicate meaning, and shape understanding.",
+      "parentId": "root_knowledge",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 1
+    },
+    {
+      "id": "domain_technology",
+      "label": "Technology",
+      "description": "Applied knowledge: turning ideas into tools, systems, and capabilities.",
+      "parentId": "root_knowledge",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 1
+    },
+    {
+      "id": "domain_philosophy",
+      "label": "Philosophy",
+      "description": "Examines truth, reasoning, ethics, and how we justify what we believe.",
+      "parentId": "root_knowledge",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 1
+    },
+
+    {
+      "id": "science_method",
+      "label": "Scientific Method",
+      "description": "A cycle of forming hypotheses, testing them, and refining explanations.",
+      "parentId": "domain_science",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 2
+    },
+    {
+      "id": "science_matter",
+      "label": "Matter and Energy",
+      "description": "Core physical concepts describing what things are and how they change.",
+      "parentId": "domain_science",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 2
+    },
+    {
+      "id": "science_life",
+      "label": "Life Systems",
+      "description": "How living organisms are organized, adapt, and interact with environments.",
+      "parentId": "domain_science",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 2
+    },
+
+    {
+      "id": "science_hypothesis",
+      "label": "Hypothesis and Falsifiability",
+      "description": "What makes a scientific claim testable and open to being proven wrong.",
+      "parentId": "science_method",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 3
+    },
+    {
+      "id": "science_experiment_design",
+      "label": "Experiment Design",
+      "description": "How controls, variables, and measurement improve reliability of conclusions.",
+      "parentId": "science_method",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 3
+    },
+    {
+      "id": "science_atomic_structure",
+      "label": "Atomic Structure",
+      "description": "How atomic composition helps explain material properties and reactions.",
+      "parentId": "science_matter",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 3
+    },
+    {
+      "id": "science_energy_transfer",
+      "label": "Energy Transfer",
+      "description": "How energy moves through systems via heat, work, and transformation.",
+      "parentId": "science_matter",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 3
+    },
+    {
+      "id": "science_ecosystems",
+      "label": "Ecosystem Dynamics",
+      "description": "How interactions between organisms and environment shape stability and change.",
+      "parentId": "science_life",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 3
+    },
+    {
+      "id": "science_evolution",
+      "label": "Evolution by Selection",
+      "description": "How variation and selection produce adaptation over generations.",
+      "parentId": "science_life",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 3
+    },
+
+    {
+      "id": "math_logic",
+      "label": "Logical Reasoning",
+      "description": "Drawing sound conclusions from clear premises and valid argument forms.",
+      "parentId": "domain_mathematics",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 2
+    },
+    {
+      "id": "math_patterns",
+      "label": "Patterns and Functions",
+      "description": "Describing change and relationships between quantities.",
+      "parentId": "domain_mathematics",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 2
+    },
+    {
+      "id": "math_probability",
+      "label": "Probability and Uncertainty",
+      "description": "Reasoning under uncertainty using chance, likelihood, and expectation.",
+      "parentId": "domain_mathematics",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 2
+    },
+
+    {
+      "id": "math_deduction",
+      "label": "Deduction vs Induction",
+      "description": "Understanding when certainty is possible and when inference is probabilistic.",
+      "parentId": "math_logic",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 3
+    },
+    {
+      "id": "math_proof_idea",
+      "label": "Proof as Explanation",
+      "description": "Seeing proof not only as verification, but as insight into why statements hold.",
+      "parentId": "math_logic",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 3
+    },
+    {
+      "id": "math_function_modeling",
+      "label": "Function Modeling",
+      "description": "Using functions to model growth, decay, and recurring real-world behavior.",
+      "parentId": "math_patterns",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 3
+    },
+    {
+      "id": "math_rate_change",
+      "label": "Rate of Change",
+      "description": "Interpreting how quickly quantities change and what that implies.",
+      "parentId": "math_patterns",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 3
+    },
+    {
+      "id": "math_conditional_probability",
+      "label": "Conditional Probability",
+      "description": "Updating likelihoods when new information becomes available.",
+      "parentId": "math_probability",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 3
+    },
+    {
+      "id": "math_risk_reasoning",
+      "label": "Risk and Decision Making",
+      "description": "Balancing outcomes and uncertainty to make better decisions.",
+      "parentId": "math_probability",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 3
+    },
+
+    {
+      "id": "language_meaning",
+      "label": "Meaning and Interpretation",
+      "description": "How words map to concepts and why context changes meaning.",
+      "parentId": "domain_language",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 2
+    },
+    {
+      "id": "language_argument",
+      "label": "Argument and Rhetoric",
+      "description": "How language persuades, clarifies, or distorts reasoning.",
+      "parentId": "domain_language",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 2
+    },
+    {
+      "id": "language_communication",
+      "label": "Communication Clarity",
+      "description": "Structuring ideas so others can understand and respond effectively.",
+      "parentId": "domain_language",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 2
+    },
+
+    {
+      "id": "language_ambiguity",
+      "label": "Ambiguity and Precision",
+      "description": "Recognizing unclear language and reformulating with precision.",
+      "parentId": "language_meaning",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 3
+    },
+    {
+      "id": "language_framing",
+      "label": "Framing Effects",
+      "description": "How wording influences judgment without changing core facts.",
+      "parentId": "language_argument",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 3
+    },
+    {
+      "id": "language_explanation_design",
+      "label": "Explanation Design",
+      "description": "Adapting explanations to audience knowledge and goals.",
+      "parentId": "language_communication",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 3
+    },
+
+    {
+      "id": "tech_computation",
+      "label": "Computation",
+      "description": "How problems are represented and solved through algorithms.",
+      "parentId": "domain_technology",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 2
+    },
+    {
+      "id": "tech_systems",
+      "label": "Systems Design",
+      "description": "Building reliable systems from interacting components and constraints.",
+      "parentId": "domain_technology",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 2
+    },
+    {
+      "id": "tech_ai",
+      "label": "AI Foundations",
+      "description": "Core ideas behind machine learning, model behavior, and limitations.",
+      "parentId": "domain_technology",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 2
+    },
+
+    {
+      "id": "tech_algorithmic_thinking",
+      "label": "Algorithmic Thinking",
+      "description": "Decomposing problems into clear, executable steps.",
+      "parentId": "tech_computation",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 3
+    },
+    {
+      "id": "tech_tradeoffs",
+      "label": "Performance Trade-offs",
+      "description": "Balancing speed, memory, and complexity in solution design.",
+      "parentId": "tech_computation",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 3
+    },
+    {
+      "id": "tech_reliability",
+      "label": "Reliability and Failure Modes",
+      "description": "Anticipating failures and designing systems that degrade gracefully.",
+      "parentId": "tech_systems",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 3
+    },
+    {
+      "id": "tech_feedback_loops",
+      "label": "Feedback Loops",
+      "description": "Using measurement and iteration to improve system behavior over time.",
+      "parentId": "tech_systems",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 3
+    },
+    {
+      "id": "tech_model_generalization",
+      "label": "Generalization",
+      "description": "How models perform on unseen cases, not just training examples.",
+      "parentId": "tech_ai",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 3
+    },
+    {
+      "id": "tech_bias_limits",
+      "label": "Bias and Limits",
+      "description": "Understanding where AI systems can be misleading, unfair, or brittle.",
+      "parentId": "tech_ai",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 3
+    },
+
+    {
+      "id": "phil_epistemology",
+      "label": "Epistemology",
+      "description": "What it means to know something and how knowledge is justified.",
+      "parentId": "domain_philosophy",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 2
+    },
+    {
+      "id": "phil_ethics",
+      "label": "Ethics",
+      "description": "How we reason about right action, responsibility, and values.",
+      "parentId": "domain_philosophy",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 2
+    },
+    {
+      "id": "phil_logic",
+      "label": "Philosophical Logic",
+      "description": "Evaluating claims, arguments, and assumptions with rigor.",
+      "parentId": "domain_philosophy",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 2
+    },
+
+    {
+      "id": "phil_belief_justification",
+      "label": "Belief and Justification",
+      "description": "Distinguishing justified belief from opinion or intuition.",
+      "parentId": "phil_epistemology",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 3
+    },
+    {
+      "id": "phil_uncertainty_truth",
+      "label": "Truth Under Uncertainty",
+      "description": "How to reason and act when certainty is impossible.",
+      "parentId": "phil_epistemology",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 3
+    },
+    {
+      "id": "phil_consequences_duties",
+      "label": "Consequences and Duties",
+      "description": "Comparing outcome-based and principle-based ethical reasoning.",
+      "parentId": "phil_ethics",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 3
+    },
+    {
+      "id": "phil_fallacies",
+      "label": "Reasoning Fallacies",
+      "description": "Recognizing recurring errors that weaken arguments.",
+      "parentId": "phil_logic",
+      "status": "locked",
+      "attempts": 0,
+      "depth": 3
+    }
+  ]
+}
