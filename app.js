@@ -1,6 +1,7 @@
 import {
   loadState,
   initState,
+  addNode,
   updateNode,
   incrementAttempts,
   getChildren,
@@ -23,6 +24,7 @@ let openaiApiKey = null;
 let apiKeyBackdrop = null;
 let apiKeyPanel = null;
 let changeApiKeyBtn = null;
+let createNodeBtn = null;
 let apiKeyResolver = null;
 let developerBypassEnabled = false;
 let rootEl = null;
@@ -165,7 +167,8 @@ function showLanding() {
 function showTreeUi() {
   if (landingEl) landingEl.hidden = true;
   if (rootEl) rootEl.hidden = false;
-  if (changeApiKeyBtn) changeApiKeyBtn.hidden = false;
+  if (changeApiKeyBtn) changeApiKeyBtn.hidden = true;
+  if (createNodeBtn) createNodeBtn.hidden = false;
 }
 
 function enterApp() {
@@ -174,6 +177,20 @@ function enterApp() {
   renderTree();
   showTreeUi();
   appEntered = true;
+}
+
+function createNodeFromPrompt() {
+  const state = loadState();
+  if (!state?.nodes) return;
+  const root = getRoot(state);
+  if (!root) return;
+
+  const label = window.prompt("New node title:");
+  if (!label || !label.trim()) return;
+  const description = window.prompt("Short description (optional):") || "";
+  const created = addNode(root.id, label.trim(), description.trim());
+  if (!created) return;
+  renderTree();
 }
 
 async function chatCompletion({ system, user, signal }) {
@@ -1167,6 +1184,12 @@ function injectStyles() {
       font: inherit;
       cursor: pointer;
     }
+    #grove-create-node {
+      position: fixed;
+      right: 16px;
+      top: 16px;
+      z-index: 45;
+    }
   `;
   const style = document.createElement("style");
   style.textContent = css;
@@ -1254,6 +1277,13 @@ function mountDom() {
   changeApiKeyBtn.addEventListener("click", () => openApiKeyEditor());
   changeApiKeyBtn.hidden = true;
 
+  createNodeBtn = document.createElement("button");
+  createNodeBtn.id = "grove-create-node";
+  createNodeBtn.type = "button";
+  createNodeBtn.textContent = "Create Node";
+  createNodeBtn.addEventListener("click", createNodeFromPrompt);
+  createNodeBtn.hidden = true;
+
   apiKeyBackdrop = document.createElement("div");
   apiKeyBackdrop.id = "grove-api-key-backdrop";
   apiKeyBackdrop.hidden = true;
@@ -1265,6 +1295,7 @@ function mountDom() {
   document.body.appendChild(rootEl);
   document.body.appendChild(landingEl);
   document.body.appendChild(changeApiKeyBtn);
+  document.body.appendChild(createNodeBtn);
   document.body.appendChild(modalBackdrop);
   document.body.appendChild(modalPanel);
   document.body.appendChild(apiKeyBackdrop);
@@ -1287,13 +1318,9 @@ function mountDom() {
 }
 
 async function bootstrap() {
-  setDeveloperBypass(loadDeveloperBypass());
+  setDeveloperBypass(true);
   mountDom();
-  if (hasValidApiKey()) {
-    enterApp();
-    return;
-  }
-  showLanding();
+  enterApp();
 }
 
 bootstrap();
