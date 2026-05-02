@@ -18,11 +18,13 @@ import {
 } from "./core/engine.js";
 
 const STORAGE_OPENAI_API_KEY = "grove_openai_api_key";
+const STORAGE_DEV_BYPASS = "grove_dev_bypass";
 let openaiApiKey = null;
 let apiKeyBackdrop = null;
 let apiKeyPanel = null;
 let changeApiKeyBtn = null;
 let apiKeyResolver = null;
+let developerBypassEnabled = false;
 let rootEl = null;
 let landingEl = null;
 let appEntered = false;
@@ -48,7 +50,28 @@ function saveApiKey(key) {
 }
 
 function isValidApiKeyFormat(key) {
-  return typeof key === "string" && key.startsWith("sk-");
+  return typeof key === "string" && key.trim().length >= 12;
+}
+
+function setDeveloperBypass(enabled) {
+  developerBypassEnabled = Boolean(enabled);
+  try {
+    if (developerBypassEnabled) {
+      localStorage.setItem(STORAGE_DEV_BYPASS, "1");
+    } else {
+      localStorage.removeItem(STORAGE_DEV_BYPASS);
+    }
+  } catch {
+    /* ignore storage errors */
+  }
+}
+
+function loadDeveloperBypass() {
+  try {
+    return localStorage.getItem(STORAGE_DEV_BYPASS) === "1";
+  } catch {
+    return false;
+  }
 }
 
 function setApiKeyModalVisible(visible, message = "", prefill = "") {
@@ -60,24 +83,28 @@ function setApiKeyModalVisible(visible, message = "", prefill = "") {
   apiKeyPanel.innerHTML = `
     <h2 class="grove-modal-title">OpenAI API key required</h2>
     <p class="grove-modal-desc">Bring your own OpenAI API key to unlock AI-powered questioning and evaluation.</p>
-    <input class="grove-input" data-grove-api-key-input type="password" placeholder="sk-..." value="${esc(prefill)}" />
+    <input class="grove-input grove-input-single" data-grove-api-key-input type="password" placeholder="Paste your API key" value="${esc(prefill)}" autocomplete="off" />
     <p class="grove-modal-meta">Stored only in your browser localStorage. Never sent to a Grove backend.</p>
     ${message ? `<p class="grove-error">${esc(message)}</p>` : ""}
     <div class="grove-row">
       <button type="button" class="grove-btn grove-btn-primary" data-grove-save-api-key>Save key</button>
+      <!-- TEMP_DEV_ONLY: remove this bypass button before production -->
+      <button type="button" class="grove-btn" data-grove-dev-only-skip>Developer only</button>
     </div>
   `;
 
   const input = apiKeyPanel.querySelector("[data-grove-api-key-input]");
   const saveBtn = apiKeyPanel.querySelector("[data-grove-save-api-key]");
+  const devOnlyBtn = apiKeyPanel.querySelector("[data-grove-dev-only-skip]");
   input?.focus();
 
   const submit = () => {
     const value = input?.value?.trim() || "";
     if (!isValidApiKeyFormat(value)) {
-      setApiKeyModalVisible(true, "API key must start with sk-", value);
+      setApiKeyModalVisible(true, "API key looks too short. Paste a full key.", value);
       return;
     }
+    setDeveloperBypass(false);
     saveApiKey(value);
     setApiKeyModalVisible(false);
     if (typeof apiKeyResolver === "function") {
@@ -88,12 +115,23 @@ function setApiKeyModalVisible(visible, message = "", prefill = "") {
   };
 
   saveBtn?.addEventListener("click", submit);
+  devOnlyBtn?.addEventListener("click", () => {
+    setDeveloperBypass(true);
+    setApiKeyModalVisible(false);
+    if (typeof apiKeyResolver === "function") {
+      const resolve = apiKeyResolver;
+      apiKeyResolver = null;
+      resolve("");
+    }
+    enterApp();
+  });
   input?.addEventListener("keydown", (e) => {
     if (e.key === "Enter") submit();
   });
 }
 
 async function ensureApiKey() {
+  if (developerBypassEnabled) return "";
   if (openaiApiKey && isValidApiKeyFormat(openaiApiKey)) return openaiApiKey;
   const stored = getStoredApiKey();
   if (isValidApiKeyFormat(stored)) {
@@ -113,6 +151,7 @@ function openApiKeyEditor(message = "") {
 }
 
 function hasValidApiKey() {
+  if (developerBypassEnabled) return true;
   const current = openaiApiKey || getStoredApiKey();
   return isValidApiKeyFormat(current);
 }
@@ -138,6 +177,17 @@ function enterApp() {
 }
 
 async function chatCompletion({ system, user, signal }) {
+  if (developerBypassEnabled) {
+    if (user.includes("LEARNER_ANSWER")) {
+      return JSON.stringify({
+        valid: true,
+        reason: "Developer bypass enabled: auto-approved without API call.",
+      });
+    }
+    return JSON.stringify({
+      question: "Developer bypass enabled. Explain this concept in your own words with one clear example.",
+    });
+  }
   // This uses the OpenAI API directly from the browser. The API key is stored locally and never sent to a custom backend.
   const apiKey = await ensureApiKey();
   try {
@@ -1026,6 +1076,10 @@ function injectStyles() {
       min-height: 120px;
       background: #fffdf8;
     }
+    .grove-input-single {
+      min-height: 0;
+      resize: none;
+    }
     .grove-row {
       display: flex;
       justify-content: flex-end;
@@ -1156,22 +1210,31 @@ function mountDom() {
       <svg class="grove-landing-tree" viewBox="0 0 420 220" role="img" aria-label="Stylized knowledge tree">
         <defs>
           <linearGradient id="groveCanopy" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#8ccf9b" />
-            <stop offset="100%" stop-color="#4d9b67" />
+            <stop offset="0%" stop-color="#a7ddaf" />
+            <stop offset="100%" stop-color="#4f9f69" />
+          </linearGradient>
+          <linearGradient id="groveTrunk" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#8a654d" />
+            <stop offset="100%" stop-color="#6e4d39" />
           </linearGradient>
         </defs>
-        <ellipse cx="210" cy="92" rx="126" ry="68" fill="url(#groveCanopy)" opacity="0.95"></ellipse>
-        <ellipse cx="138" cy="86" rx="56" ry="38" fill="#9ad7a8" opacity="0.88"></ellipse>
-        <ellipse cx="284" cy="88" rx="60" ry="40" fill="#85c895" opacity="0.92"></ellipse>
-        <rect x="190" y="110" width="40" height="82" rx="14" fill="#7c5a44"></rect>
-        <path d="M210 190 C182 198, 156 206, 124 214" stroke="#7c5a44" stroke-width="9" fill="none" stroke-linecap="round"></path>
-        <path d="M210 192 C238 198, 266 206, 298 214" stroke="#7c5a44" stroke-width="9" fill="none" stroke-linecap="round"></path>
-        <circle cx="130" cy="212" r="8" fill="#4d9b67"></circle>
-        <circle cx="206" cy="214" r="8" fill="#4d9b67"></circle>
-        <circle cx="292" cy="212" r="8" fill="#4d9b67"></circle>
+        <ellipse cx="210" cy="98" rx="132" ry="70" fill="url(#groveCanopy)" opacity="0.96"></ellipse>
+        <ellipse cx="130" cy="92" rx="58" ry="38" fill="#b6e7be" opacity="0.9"></ellipse>
+        <ellipse cx="292" cy="90" rx="62" ry="40" fill="#8dce9f" opacity="0.93"></ellipse>
+        <ellipse cx="210" cy="70" rx="42" ry="24" fill="#9fdaa8" opacity="0.88"></ellipse>
+        <rect x="189" y="114" width="42" height="82" rx="14" fill="url(#groveTrunk)"></rect>
+        <path d="M210 188 C182 196, 154 204, 122 212" stroke="#77553f" stroke-width="9" fill="none" stroke-linecap="round"></path>
+        <path d="M210 190 C238 198, 266 206, 298 214" stroke="#77553f" stroke-width="9" fill="none" stroke-linecap="round"></path>
+        <circle cx="127" cy="212" r="8" fill="#4d9b67"></circle>
+        <circle cx="209" cy="214" r="8" fill="#4d9b67"></circle>
+        <circle cx="293" cy="213" r="8" fill="#4d9b67"></circle>
       </svg>
       <button type="button" class="grove-btn grove-btn-primary grove-landing-cta" data-grove-start>
         Start → Enter your OpenAI API key
+      </button>
+      <!-- TEMP_DEV_ONLY: remove this bypass button before production -->
+      <button type="button" class="grove-btn grove-landing-cta" data-grove-dev-only-start>
+        Developer only
       </button>
     </div>
   `;
@@ -1215,11 +1278,16 @@ function mountDom() {
       /* modal remains open or user retries */
     }
   });
+  landingEl.querySelector("[data-grove-dev-only-start]")?.addEventListener("click", () => {
+    setDeveloperBypass(true);
+    enterApp();
+  });
 
   wireSvgInteractions();
 }
 
 async function bootstrap() {
+  setDeveloperBypass(loadDeveloperBypass());
   mountDom();
   if (hasValidApiKey()) {
     enterApp();
